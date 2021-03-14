@@ -24,7 +24,8 @@
 #define CHARACTERISTIC_UUID_TX "0000fff2-0000-1000-8000-00805f9b34fb"
 
 // define simulation constants
-#define COUNT_BATTERIES 8
+#define COUNT_BATTERIES 4
+#define MIN_CELL_VOLTAGE 4127
 #define MIN_CURRENT_VOLT 12
 #define MIN_CURRENT_AMP 1
 #define MAX_CURRENT_VOLT 14
@@ -226,14 +227,14 @@ void createRunInfoResponse(byte *buffer) {
   buffer[1] = 0x03;
   buffer[2] = 0x7C; // content length: "7C" = 124
 
-  int batteryMilliVolt = 4127;
+  int batteryMilliVolt = MIN_CELL_VOLTAGE;
   for (int i = 0; i < 32; i++) {
     if (COUNT_BATTERIES >= i + 1) {
-      batteryMilliVolt = batteryMilliVolt + 10 * i;
       setIntValueToArray(buffer, 3 + 2*i, batteryMilliVolt);
     } else {
       setIntValueToArray(buffer, 3 + 2*i, 0);
     }
+    batteryMilliVolt = batteryMilliVolt + 10;
   }
 
   int batteryTemperature = 60;
@@ -260,12 +261,14 @@ void createRunInfoResponse(byte *buffer) {
 
   int currentKw = currentV * currentA;
   int currentLoad = (currentKw / (MAX_CURRENT_VOLT * MAX_CURRENT_AMP * 1.0)) * 1000.0;
+  int maxCellVoltage = MIN_CELL_VOLTAGE + ((COUNT_BATTERIES - 1) * 10);
+  int averageCellVoltage = (MIN_CELL_VOLTAGE + maxCellVoltage) / 2;
 
   setIntValueToArray(buffer, 83, currentV * 10); // current V (in 0,1V)
   setIntValueToArray(buffer, 85, 30000 + (currentA * 10)); // current A (offset: 30000 in 0,1A)
   setIntValueToArray(buffer, 87, currentLoad); // NowValue in Percent (in 0,1 percent)
-  setIntValueToArray(buffer, 89, 4407); // max cell voltage (in mV)
-  setIntValueToArray(buffer, 91, 4127); // min cell voltage (in mV)
+  setIntValueToArray(buffer, 89, maxCellVoltage); // max cell voltage (in mV)
+  setIntValueToArray(buffer, 91, MIN_CELL_VOLTAGE); // min cell voltage (in mV)
   setIntValueToArray(buffer, 93, 0); // ???
   setIntValueToArray(buffer, 95, 0); // ???
   setIntValueToArray(buffer, 97, 0); // ???
@@ -276,7 +279,7 @@ void createRunInfoResponse(byte *buffer) {
   setIntValueToArray(buffer, 107, 1); // JH on/off
   setIntValueToArray(buffer, 109, 1); // CDMOS on/off (1 = on, everything else off)
   setIntValueToArray(buffer, 111, 1); // FDMOS on/off
-  setIntValueToArray(buffer, 113, 4267); // average voltage (in mV)
+  setIntValueToArray(buffer, 113, averageCellVoltage); // average voltage (in mV)
   setIntValueToArray(buffer, 115, 4000); // differential voltage (in mV)
   setIntValueToArray(buffer, 117, currentKw); // current KW (in W)
 
@@ -310,7 +313,7 @@ void createRunInfoLastBatteryValueResponse(byte *buffer) {
   buffer[1] = 0x03;
   buffer[2] = 0x20; // content length: "20" = 32
 
-  int batteryMilliVolt = 4127;
+  int batteryMilliVolt = MIN_CELL_VOLTAGE;
   for (int i = 0; i < 16; i++) {
     if (COUNT_BATTERIES >= i + 1) {
       batteryMilliVolt = batteryMilliVolt + 10 * i;
