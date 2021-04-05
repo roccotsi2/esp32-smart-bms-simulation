@@ -209,7 +209,7 @@ void createRunInfoResponse(byte *buffer) {
   // Position 46: ???
   // Position 47: ???
   // Position 48: ???
-  // Position 49: count battbatteryTemperatureery volt
+  // Position 49: count battery volt
   // Position 50: count battery temperatures (max. 8)
   // Position 51: cycle
   // Position 52: JH on/off
