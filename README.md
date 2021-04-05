@@ -1,5 +1,5 @@
 # esp32-smart-bms-simulation
-A simple simulation of the Daly Smart BMS for ESP32 via bluetooth BLE (with Arduino). Is purpose is to use this for retrieving current values from Smart BMS without having one running. Only same sample values are sent as response, not all things works (especially no write actions).
+A simple simulation of the Daly Smart BMS for ESP32 via bluetooth BLE (with Arduino). Its purpose is to use this for retrieving current values from Smart BMS without having one running. Only same sample values are sent as response, not all things works (especially no write actions).
 
 Following data is sent within this simulation:
 - Run Info
@@ -25,7 +25,7 @@ Daly Smart BMS uses the following format to send data (data from Smart BMS to a 
 <HEADER_READ><CONTENT_LENGTH><CONTENT><CRC>
 <-----------CRC relevant------------->
 ```
-- HEADER_READ: 0xD203
+- HEADER_READ: always 0xD203
 - CONTENT_LENGTH: content length in bytes
 - CONTENT: the content (depends on the information which is sent)
 - CRC: checksum (2 bytes). The checksum is calculated over HEADER_READ, CONTENT_LENGTH and CONTENT. See function "getCRC" to see how CRC is calculated
