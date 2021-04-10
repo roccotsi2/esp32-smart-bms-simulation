@@ -4,7 +4,7 @@
 #define CHARACTERISTIC_UUID_TX "0000fff2-0000-1000-8000-00805f9b34fb"
 
 // define bluetooth constants
-#define BLE_DATA_CHUNK_SIZE 200
+//#define BLE_DATA_CHUNK_SIZE 200
 
 // variables
 BLECharacteristic *pCharacteristicWrite;
@@ -78,8 +78,18 @@ void bluetoothSetupServer() {
 }
 
 void bluetoothSendByteArray(byte *buffer, int dataLength) {
-  pCharacteristicRead->setValue(buffer, dataLength); 
-  pCharacteristicRead->notify();
+  int sentBytes = 0;
+  int chunkSize = BLEDevice::getMTU() - 3;
+  byte tmpBuffer[chunkSize];
+  while (sentBytes < dataLength) {
+    int countBytes = (dataLength - sentBytes) > chunkSize ? chunkSize : (dataLength - sentBytes);
+    for (int i = 0; i < countBytes; i++) {
+      tmpBuffer[i] = buffer[sentBytes + i];
+    }
+    pCharacteristicRead->setValue(tmpBuffer, countBytes); 
+    pCharacteristicRead->notify();
+    sentBytes = sentBytes + countBytes;
+  }
 }
 
 bool bluetoothIsDeviceConnected() {

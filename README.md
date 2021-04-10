@@ -13,7 +13,7 @@ I used Arduino IDE for development and installed "esp32" board using board manag
 To test this simulation, you can use the "Smart BMS App" and connect via bluetooth to "DL-40D63C3223A2" (bluetooth and location must be activated): https://play.google.com/store/apps/details?id=com.inuker.bluetooth.daliy&hl=de&gl=US
 
 ## Needed libraries:
-- Board: esp32 (version 1.0.4 used)
+- Board: esp32 (version 1.0.6 used)
 
 ## Data format of used Smart BMS from Daly:
 This section does not contain the full data format for Daly Smart BMS (there seems to be different Smart BMS that uses another data format, anyway), because I found no official documentation on this and therefore I analyzed the data packets. The results of my analysis are documented in this section. It seems to be the case that Smart BMS is waiting for some data (because Android App does send commands to my simulation while connected to it), but I do not know how to interpret these data yet.
