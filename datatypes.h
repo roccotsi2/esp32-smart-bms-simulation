@@ -27,5 +27,28 @@ typedef struct smartbmsutilRunInfo {
    int16_t alarm2;
    int16_t alarm3;
    int16_t alarm4;
-   int16_t crc;
+   int8_t crcHigh;
+   int8_t crcLow;
 } SmartbmsutilRunInfo;
+
+#pragma pack(1)
+typedef struct smartbmsutilVersionInfo {
+   int8_t header1;
+   int8_t header2;
+   int8_t contentLength;
+   int8_t appVersionText[16];
+   int8_t mcuVersionText[16];
+   int8_t machineVersionText[32];
+   int8_t crcHigh;
+   int8_t crcLow;
+} SmartbmsutilVersionInfo;
+
+#pragma pack(1)
+typedef struct smartbmsutilRunInfoLastBatteryValue {
+   int8_t header1;
+   int8_t header2;
+   int8_t contentLength;
+   int16_t lastBatteryValue[16];
+   int8_t crcHigh;
+   int8_t crcLow;
+} SmartbmsutilRunInfoLastBatteryValue;
