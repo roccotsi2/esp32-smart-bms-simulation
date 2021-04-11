@@ -19,7 +19,8 @@
 #include <BLE2902.h>
 #include "datatypes.h"
 
-// define simulation constantscurrentSmartbmsutilVersionInfo
+// define simulation constants
+#define UPDATE_INTERVAL_MILLIS 5000
 #define COUNT_BATTERIES 4
 #define MIN_CELL_VOLTAGE 4127
 #define MIN_CURRENT_VOLT 12
@@ -193,20 +194,22 @@ void loop() {
     fillSmartbmsutilVersionInfo(&currentSmartbmsutilVersionInfo);
     smartbmsutilWriteSmartbmsutilVersionInfoToBuffer(bufferVersion, sizeof(bufferVersion), &currentSmartbmsutilVersionInfo);
     bluetoothSendByteArray(bufferVersion, sizeof(bufferVersion));
+    
     delay(1000);
-
     Serial.println("Sending RunInfo");
     byte bufferRunInfo[sizeof(SmartbmsutilRunInfo)];
     fillSmartbmsutilRunInfo(&currentSmartbmsutilRunInfo);
     smartbmsutilWriteSmartbmsutilRunInfoToBuffer(bufferRunInfo, sizeof(bufferRunInfo), &currentSmartbmsutilRunInfo);
     bluetoothSendByteArray(bufferRunInfo, sizeof(bufferRunInfo));
-    delay(1000);
-
-    /*Serial.println("Sending RunInfoLastBatteryValue");
+    
+    /*delay(1000);
+    Serial.println("Sending RunInfoLastBatteryValue");
     byte bufferRunInfoLastBatteryValue[sizeof(SmartbmsutilRunInfoLastBatteryValue)];
     fillSmartbmsutilRunInfoLastBatteryValue(&currentSmartbmsutilRunInfoLastBatteryValue);
     smartbmsutilWriteSmartbmsutilRunInfoLastBatteryValueToBuffer(bufferRunInfoLastBatteryValue, sizeof(bufferRunInfoLastBatteryValue), &currentSmartbmsutilRunInfoLastBatteryValue);
     bluetoothSendByteArray(bufferRunInfoLastBatteryValue, sizeof(bufferRunInfoLastBatteryValue));
     delay(1000);*/
+
+    delay(UPDATE_INTERVAL_MILLIS);
   }
 }
