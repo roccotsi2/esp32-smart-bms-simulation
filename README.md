@@ -39,7 +39,7 @@ The content lengths are in bytes:
 
 ### Content format Run Info
 All positions needs 2 bytes:
-- Position 0-31: Battery volt (in mV)batteryTemperature
+- Position 0-31: Battery volt (in mV)
 - Position 32-39: Battery temperature in Celsius (offset: 40)
 - Position 40: current V (in 0,1V)
 - Position 41: current A (offset: 30000 in 0,1A)
