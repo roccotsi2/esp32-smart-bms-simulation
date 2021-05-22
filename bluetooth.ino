@@ -13,11 +13,17 @@ bool deviceConnected = false;
 
 class MyServerCallbacks: public BLEServerCallbacks {
     void onConnect(BLEServer* pServer) {
+      Serial.println("Connection established");
       deviceConnected = true;
     };
 
     void onDisconnect(BLEServer* pServer) {
+      Serial.println("Connection lost");
       deviceConnected = false;
+
+      // start advertising again
+      pServer->getAdvertising()->start();
+      Serial.println("Advertising started");
     }
 };
 

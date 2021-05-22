@@ -1,4 +1,4 @@
-#pragma pack(1)
+//#pragma pack(1)
 typedef struct smartbmsutilRunInfo {
    int8_t header1;
    int8_t header2;
@@ -7,7 +7,7 @@ typedef struct smartbmsutilRunInfo {
    int16_t batteryTemp[8];
    int16_t currentV;
    int16_t currentA;
-   int16_t nowValuePercent;
+   int16_t chargePercent;
    int16_t maxCellVoltage;
    int16_t minCellVoltage;
    int16_t dummy1;
@@ -29,9 +29,9 @@ typedef struct smartbmsutilRunInfo {
    int16_t alarm4;
    int8_t crcHigh;
    int8_t crcLow;
-} SmartbmsutilRunInfo;
+} __attribute__ ((packed)) SmartbmsutilRunInfo;
 
-#pragma pack(1)
+//#pragma pack(1)
 typedef struct smartbmsutilVersionInfo {
    int8_t header1;
    int8_t header2;
@@ -41,9 +41,9 @@ typedef struct smartbmsutilVersionInfo {
    int8_t machineVersionText[32];
    int8_t crcHigh;
    int8_t crcLow;
-} SmartbmsutilVersionInfo;
+} __attribute__ ((packed)) SmartbmsutilVersionInfo;
 
-#pragma pack(1)
+//#pragma pack(1)
 typedef struct smartbmsutilRunInfoLastBatteryValue {
    int8_t header1;
    int8_t header2;
@@ -51,4 +51,4 @@ typedef struct smartbmsutilRunInfoLastBatteryValue {
    int16_t lastBatteryValue[16];
    int8_t crcHigh;
    int8_t crcLow;
-} SmartbmsutilRunInfoLastBatteryValue;
+} __attribute__ ((packed)) SmartbmsutilRunInfoLastBatteryValue;

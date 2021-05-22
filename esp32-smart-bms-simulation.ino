@@ -80,14 +80,19 @@ void fillSmartbmsutilRunInfo(SmartbmsutilRunInfo *currentSmartbmsutilRunInfo) {
     currentA = currentA + STEPS_AMP;
   }
 
+  int currentCharge = currentSmartbmsutilRunInfo->chargePercent;
+  currentCharge = currentCharge - 100;
+  if (currentCharge < 0) {
+    currentCharge = 1000; // 100%
+  }
+
   int currentKw = currentV * currentA;
-  int currentLoad = (currentKw / (MAX_CURRENT_VOLT * MAX_CURRENT_AMP * 1.0)) * 1000.0;
   int maxCellVoltage = MIN_CELL_VOLTAGE + ((COUNT_BATTERIES - 1) * 10);
   int averageCellVoltage = (MIN_CELL_VOLTAGE + maxCellVoltage) / 2;
 
   currentSmartbmsutilRunInfo->currentV = currentV * 10; // current V (in 0,1V)
   currentSmartbmsutilRunInfo->currentA = 30000 + (currentA * 10); // current A (offset: 30000 in 0,1A)
-  currentSmartbmsutilRunInfo->nowValuePercent = currentLoad; // NowValue in Percent (in 0,1 percent)
+  currentSmartbmsutilRunInfo->chargePercent = currentCharge; // charge in Percent (in 0,1 percent)
   currentSmartbmsutilRunInfo->maxCellVoltage = maxCellVoltage; // max cell voltage (in mV)
   currentSmartbmsutilRunInfo->minCellVoltage = MIN_CELL_VOLTAGE; // min cell voltage (in mV)
   currentSmartbmsutilRunInfo->dummy1 = 0;
@@ -96,9 +101,9 @@ void fillSmartbmsutilRunInfo(SmartbmsutilRunInfo *currentSmartbmsutilRunInfo) {
   currentSmartbmsutilRunInfo->dummy4 = 0;
   currentSmartbmsutilRunInfo->countBatteryVoltages = COUNT_BATTERIES; // count battery volt
   currentSmartbmsutilRunInfo->countBatteryTemp = COUNT_BATTERIES; // count battery temperatures (max-> 8)
-  currentSmartbmsutilRunInfo->cycle = 5;
+  currentSmartbmsutilRunInfo->cycle = 57;
   currentSmartbmsutilRunInfo->jh = 1;
-  currentSmartbmsutilRunInfo->cdmos = 1;
+  currentSmartbmsutilRunInfo->cdmos = 0;
   currentSmartbmsutilRunInfo->fdmos = 1;
   currentSmartbmsutilRunInfo->avgVoltage = averageCellVoltage; // average voltage (in mV)
   currentSmartbmsutilRunInfo->diffVoltage = 4000; // differential voltage (in mV)
