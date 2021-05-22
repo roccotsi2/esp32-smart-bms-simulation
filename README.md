@@ -43,7 +43,7 @@ All positions needs 2 bytes:
 - Position 32-39: Battery temperature in Celsius (offset: 40)
 - Position 40: current V (in 0,1V)
 - Position 41: current A (offset: 30000 in 0,1A)
-- Position 42: NowValue in Percent (in 0,1 percent)
+- Position 42: SOC - State Of Charge in Percent (in 0,1 percent)
 - Position 43: max cell voltage (in mV)
 - Position 44: min cell voltage (in mV)
 - Position 45: ???
