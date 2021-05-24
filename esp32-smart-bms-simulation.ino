@@ -21,6 +21,7 @@
 
 // define simulation constants
 #define UPDATE_INTERVAL_MILLIS 10000
+#define SEND_CONTINIOUSLY 0 // 1 = send continously, 0 = sent only after receiving command
 
 void setup() {
   Serial.begin(115200);  
@@ -29,15 +30,17 @@ void setup() {
 
 void loop() {
   if (bluetoothIsDeviceConnected()) {  
-    delay(2000);
-    smartbmsdemoSendRunInfo();
-
-    delay(2000);
-    smartbmsdemoSendVersionInfo();
-    
-    /*delay(2000);
-    smartbmsutilSendRunInfoLastBatteryValue();*/
-
-    delay(UPDATE_INTERVAL_MILLIS);
+    if (SEND_CONTINIOUSLY == 1) {
+      delay(2000);
+      smartbmsdemoSendRunInfo();
+  
+      delay(2000);
+      smartbmsdemoSendVersionInfo();
+      
+      /*delay(2000);
+      smartbmsutilSendRunInfoLastBatteryValue();*/
+  
+      delay(UPDATE_INTERVAL_MILLIS);
+    }
   }
 }

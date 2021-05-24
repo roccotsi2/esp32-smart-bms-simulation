@@ -44,6 +44,11 @@ class MyCallbacks: public BLECharacteristicCallbacks {
         }
 
         Serial.println();
+
+        if (SEND_CONTINIOUSLY == 0 && smartbmsutilIsCommandRunInfo(rxValue.data(), sizeof(rxValue))) {
+          // received command to send RunInfo -> send RunInfo data
+          smartbmsdemoSendRunInfo();
+        }
       }  
     }
 };
