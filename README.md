@@ -22,7 +22,7 @@ To test this simulation, you can use the "Smart BMS App" and connect via bluetoo
 This section does not contain the full data format for Daly Smart BMS (there seems to be different Smart BMS that uses another data format, anyway), because I found no official documentation on this and therefore I analyzed the data packets. The results of my analysis are documented in this section. It seems to be the case that Smart BMS is waiting for some data (because Android App does send commands to my simulation while connected to it), but I do not know how to interpret these data yet.
 This section will be updated if I get new insights on the data format.
 
-Daly Smart BMS (data from client to Smart BMS):
+Daly Smart BMS expects following commands (data from client to Smart BMS):
 - Request RunInfo (tab status in Smart BMS app): D2 03 00 00 00 3E D7 B9
 - Request some unknown values (tab status in Smart BMS app): D2 03 00 A9 00 20 87 91
 - Request some unknown values (tab parameter in Smart BMS app): D2 03 00 80 00 29 96 5F
