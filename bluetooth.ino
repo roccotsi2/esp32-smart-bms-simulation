@@ -50,6 +50,8 @@ class MyCallbacks: public BLECharacteristicCallbacks {
           if (smartbmsutilIsCommandRunInfo(rxValue.data(), sizeof(rxValue))) {
             // received command to send RunInfo -> send RunInfo data
             smartbmsdemoSendRunInfo();
+            delay(500);
+            smartbmsdemoSendVersionInfo();
           } else if (smartbmsutilIsCommandSetDataInfo(rxValue.data(), sizeof(rxValue))) {
             smartbmsdemoSendSetDataInfo();
           }
