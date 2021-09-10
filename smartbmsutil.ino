@@ -22,6 +22,7 @@ byte smartBmsReceiveBuffer[RECEIVE_BUFFER_SIZE];
 uint16_t indexSmartBmsReceiveBuffer = 0;
 
 const char COMMAND_RUN_INFO[] = {0xD2, 0x03, 0x00, 0x00, 0x00, 0x3E, 0xD7, 0xB9};
+const char COMMAND_SET_DATA_INFO[] = {0xD2, 0x03, 0x00, 0x80, 0x00, 0x29, 0x96, 0x5F};
 
 void smartbmsutilGetCRC(byte *crcArray, byte *sourceByteArray, int crcRelevantDataLength) {
   int CRC = 65535;
@@ -179,6 +180,17 @@ void smartbmsutilWriteSmartbmsutilRunInfoLastBatteryValueToBuffer(byte *buffer, 
   smartbmsutilSwapBmsBytesEndian(buffer, sizeof(SmartbmsutilRunInfoLastBatteryValue) - 2);
 }
 
+void smartbmsutilWriteSmartbmsutilSetDataInfoToBuffer(byte *buffer, int size, SmartbmsutilSetDataInfo *smartbmsutilSetDataInfo) {
+  if (size < sizeof(SmartbmsutilSetDataInfo)) {
+    Serial.println("smartbmsutilWriteSmartbmsutilSetDataInfo: buffer too small");
+    return;
+  }
+  memcpy(buffer, smartbmsutilSetDataInfo, sizeof(SmartbmsutilSetDataInfo));
+
+  // swap bytes to little endian (as structs are organized in little endian in ESP32)
+  smartbmsutilSwapBmsBytesEndian(buffer, sizeof(SmartbmsutilSetDataInfo) - 2);
+}
+
 void smartbmsutilPrintRunInfo(SmartbmsutilRunInfo runInfo) {
   Serial.print("Battery voltages: ");
   for (int i = 0; i < runInfo.countBatteryVoltages; i++) {
@@ -224,4 +236,11 @@ bool smartbmsutilIsCommandRunInfo(const char *buffer, int size) {
     return false;
   }
   return smartbmsutilArrayEquals(buffer, COMMAND_RUN_INFO, sizeof(COMMAND_RUN_INFO));
+}
+
+bool smartbmsutilIsCommandSetDataInfo(const char *buffer, int size) {
+  if (size < sizeof(COMMAND_SET_DATA_INFO)) {
+    return false;
+  }
+  return smartbmsutilArrayEquals(buffer, COMMAND_SET_DATA_INFO, sizeof(COMMAND_SET_DATA_INFO));
 }

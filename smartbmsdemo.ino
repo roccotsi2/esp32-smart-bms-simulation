@@ -18,6 +18,7 @@ int currentV = MIN_CURRENT_VOLT;
 SmartbmsutilRunInfo currentSmartbmsutilRunInfo;
 SmartbmsutilVersionInfo currentSmartbmsutilVersionInfo;
 SmartbmsutilRunInfoLastBatteryValue currentSmartbmsutilRunInfoLastBatteryValue;
+SmartbmsutilSetDataInfo currentSmartbmsutilSetDataInfo;
 
 // fills currentSmartbmsutilRunInfo with next simulation values
 void smartbmsdemoFillSmartbmsutilRunInfo(SmartbmsutilRunInfo *currentSmartbmsutilRunInfo) {
@@ -164,6 +165,26 @@ void smartbmsdemoFillSmartbmsutilRunInfoLastBatteryValue(SmartbmsutilRunInfoLast
   currentSmartbmsutilRunInfoLastBatteryValue->crcLow = crcBuffer[1];
 }
 
+// fills currentSmartbmsutilSetDataInfo with next simulation values
+void smartbmsdemoFillSmartbmsutilSetDataInfo(SmartbmsutilSetDataInfo *currentSmartbmsutilSetDataInfo) {
+  currentSmartbmsutilSetDataInfo->header1 = 0xD2;
+  currentSmartbmsutilSetDataInfo->header2 = 0x03;
+  currentSmartbmsutilSetDataInfo->contentLength = sizeof(SmartbmsutilSetDataInfo) - READ_PACKET_OVERHEAD_LENGTH;
+
+  int batteryMilliVolt = MIN_CELL_VOLTAGE;
+  for (int i = 0; i < 20; i++) {
+    currentSmartbmsutilSetDataInfo -> values[i] = 0;
+  }
+
+  byte crcBuffer[2];
+  byte buffer[sizeof(SmartbmsutilSetDataInfo)];
+  memcpy(buffer, currentSmartbmsutilSetDataInfo, sizeof(SmartbmsutilSetDataInfo));  
+  smartbmsutilSwapBmsBytesEndian(buffer, sizeof(SmartbmsutilSetDataInfo) - 2);
+  smartbmsutilGetCRC(crcBuffer, buffer, sizeof(SmartbmsutilSetDataInfo) - 2);
+  currentSmartbmsutilSetDataInfo->crcHigh = crcBuffer[0];
+  currentSmartbmsutilSetDataInfo->crcLow = crcBuffer[1];
+}
+
 void smartbmsdemoSendRunInfo() {
   Serial.println("Sending RunInfo");
   byte bufferRunInfo[sizeof(SmartbmsutilRunInfo)];
@@ -194,5 +215,16 @@ void smartbmsdemoSendRunInfoLastBatteryValue() {
   bluetoothSendByteArray(bufferRunInfoLastBatteryValue, sizeof(bufferRunInfoLastBatteryValue));
   Serial.print("Sent: ");
   hexutilPrintByteArrayInHex(bufferRunInfoLastBatteryValue, sizeof(bufferRunInfoLastBatteryValue));
+  Serial.println();
+}
+
+void smartbmsdemoSendSetDataInfo() {
+  Serial.println("Sending SendSetDataInfo(");
+  byte bufferSetDataInfo[sizeof(SmartbmsutilSetDataInfo)];
+  smartbmsdemoFillSmartbmsutilSetDataInfo(&currentSmartbmsutilSetDataInfo);
+  smartbmsutilWriteSmartbmsutilSetDataInfoToBuffer(bufferSetDataInfo, sizeof(bufferSetDataInfo), &currentSmartbmsutilSetDataInfo);
+  bluetoothSendByteArray(bufferSetDataInfo, sizeof(bufferSetDataInfo));
+  Serial.print("Sent: ");
+  hexutilPrintByteArrayInHex(bufferSetDataInfo, sizeof(bufferSetDataInfo));
   Serial.println();
 }

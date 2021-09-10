@@ -52,3 +52,13 @@ typedef struct smartbmsutilRunInfoLastBatteryValue {
    int8_t crcHigh;
    int8_t crcLow;
 } __attribute__ ((packed)) SmartbmsutilRunInfoLastBatteryValue;
+
+//#pragma pack(1)
+typedef struct smartbmsutilSetDataInfo {
+   int8_t header1;
+   int8_t header2;
+   int8_t contentLength;
+   int16_t values[41];
+   int8_t crcHigh;
+   int8_t crcLow;
+} __attribute__ ((packed)) SmartbmsutilSetDataInfo;
