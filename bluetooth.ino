@@ -5,6 +5,7 @@
 
 // define bluetooth constants
 //#define BLE_DATA_CHUNK_SIZE 200
+bool SEND_IN_CHUNKS_OF_MTU = false;
 
 // variables
 BLECharacteristic *pCharacteristicWrite;
@@ -97,7 +98,10 @@ void bluetoothSetupServer() {
 
 void bluetoothSendByteArray(byte *buffer, int dataLength) {
   int sentBytes = 0;
-  int chunkSize = BLEDevice::getMTU() - 3;
+  int chunkSize = dataLength;
+  if (SEND_IN_CHUNKS_OF_MTU) {
+    chunkSize = BLEDevice::getMTU() - 3;
+  }
   byte tmpBuffer[chunkSize];
   while (sentBytes < dataLength) {
     int countBytes = (dataLength - sentBytes) > chunkSize ? chunkSize : (dataLength - sentBytes);
